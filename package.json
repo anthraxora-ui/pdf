@@ -1,10 +1,13 @@
 {
-  "name": "svg-to-pdf-backend",
+  "name": "pdf-backend",
   "version": "1.0.0",
-  "description": "Vercel serverless function to convert SVG to PDF",
+  "description": "Puppeteer PDF Generator for Vercel",
   "main": "api/generate.js",
+  "scripts": {
+    "start": "node api/generate.js"
+  },
   "dependencies": {
-    "pdfkit": "latest",
-    "svg-to-pdfkit": "latest"
+    "@sparticuz/chromium": "^119.0.2",
+    "puppeteer-core": "^21.9.0"
   }
 }
