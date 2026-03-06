@@ -4,7 +4,7 @@
   "description": "Vercel serverless function to convert SVG to PDF",
   "main": "api/generate.js",
   "dependencies": {
-    "pdfkit": "^0.14.0",
-    "svg-to-pdfkit": "^2.3.3"
+    "pdfkit": "latest",
+    "svg-to-pdfkit": "latest"
   }
 }
