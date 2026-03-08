@@ -1,20 +1,26 @@
-FROM node:18-slim
+# 1. Use the official pre-built image that ALREADY has Chrome installed!
+FROM ghcr.io/puppeteer/puppeteer:21.11.0
 
-RUN apt-get update \
- && apt-get install -y chromium \
- && apt-get install -y fonts-ipafont-gothic fonts-wqy-zenhei fonts-kacst fonts-freefont-ttf libxss1 \
- libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 \
- libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2 \
- --no-install-recommends \
- && rm -rf /var/lib/apt/lists/*
+# 2. Switch to the 'root' user so we have permission to copy files
+USER root
 
+# 3. Create our app folder
 WORKDIR /app
+
+# 4. Copy our ingredients list
 COPY package*.json ./
+
+# 5. Install our dependencies (This will be super fast now)
 RUN npm install
+
+# 6. Copy the rest of our server code
 COPY . .
 
-EXPOSE 3000
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV CHROME_PATH=/usr/bin/chromium
+# 7. Tell our server exactly where the pre-installed Chrome is hiding
+ENV CHROME_PATH=/usr/bin/google-chrome-stable
 
+# 8. Open the window so the UI can talk to us
+EXPOSE 3000
+
+# 9. Start the server!
 CMD ["node", "server.js"]
