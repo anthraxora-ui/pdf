@@ -6,10 +6,11 @@
     "start": "node api/index.js"
   },
   "dependencies": {
-    "@sparticuz/chromium": "^123.0.0",
-    "puppeteer-core": "^22.6.0"
+    "@sparticuz/chromium": "121.0.0",
+    "puppeteer-core": "21.11.0"
   },
   "engines": {
-    "node": "24.x"
+    "node": "18.x"
   }
 }
+
