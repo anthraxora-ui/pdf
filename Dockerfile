@@ -1,8 +1,7 @@
 FROM node:18-slim
 
-# Install Chromium (much faster than Puppeteer downloading it)
 RUN apt-get update \
- && apt-get install -y chromium-browser \
+ && apt-get install -y chromium \
  && apt-get install -y fonts-ipafont-gothic fonts-wqy-zenhei fonts-kacst fonts-freefont-ttf libxss1 \
  libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 \
  libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2 \
@@ -16,6 +15,6 @@ COPY . .
 
 EXPOSE 3000
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV CHROME_PATH=/usr/bin/chromium-browser
+ENV CHROME_PATH=/usr/bin/chromium
 
 CMD ["node", "server.js"]
