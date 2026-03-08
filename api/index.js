@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
     const page = await browser.newPage();
 
     // 2. Parse Request Body
-    const { html, css, options } = req.body;
+    const { html, css, options, headerTemplate, footerTemplate } = req.body;
 
     if (!html) {
       throw new Error('Missing HTML content');
@@ -74,13 +74,23 @@ module.exports = async (req, res) => {
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
+      displayHeaderFooter: true,
+      headerTemplate: headerTemplate || `
+        <div style="font-size: 12px; width: 100%; text-align: center; color: #333; padding-bottom: 10px; border-bottom: 1px solid #ddd; margin: 0 20px;">
+          <span style="font-weight: bold;">MathPro</span> - Generated Document
+        </div>
+      `,
+      footerTemplate: footerTemplate || `
+        <div style="font-size: 10px; width: 100%; text-align: center; color: #777; padding-top: 10px; border-top: 1px solid #ddd; margin: 0 20px;">
+          Page <span class="pageNumber"></span> of <span class="totalPages"></span>
+        </div>
+      `,
       margin: {
-        top: options?.marginTop || '0mm',
-        right: options?.marginRight || '0mm',
-        bottom: options?.marginBottom || '0mm',
-        left: options?.marginLeft || '0mm',
+        top: options?.marginTop || '40mm',
+        right: options?.marginRight || '20mm',
+        bottom: options?.marginBottom || '40mm',
+        left: options?.marginLeft || '20mm',
       },
-      displayHeaderFooter: options?.displayHeaderFooter || false,
     });
 
     // 6. Send Response
