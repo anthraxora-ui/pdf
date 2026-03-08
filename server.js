@@ -1,23 +1,24 @@
 const express = require('express');
-const handler = require('./api/index');
+const cors = require('cors');
 const app = express();
-const port = process.env.PORT || 3000;
 
-// Increase payload limit for large HTML/images
+// Allow the frontend to talk to this server
+app.use(cors());
+// Allow large images to be sent
 app.use(express.json({ limit: '50mb' }));
 
-// Health check
-app.get('/', (req, res) => {
-  res.send('MathPro PDF Service is running');
-});
-
-// Route to the Vercel handler
-app.all('/api/generate', (req, res) => {
-  return handler(req, res);
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+// ---------------------------------------------------------
+// 1. PDF GENERATOR ROUTE (Already existed)
+// ---------------------------------------------------------
+app.post('/api/generate', async (req, res) => {
+  // We use the existing logic from api/index.js
+  const pdfHandler = require('./api/index.js');
+  try {
+    await pdfHandler(req, res);
+  } catch (error) {
+    console.error("PDF Error:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // ---------------------------------------------------------
