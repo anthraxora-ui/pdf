@@ -1,5 +1,9 @@
-const chromium = require('@sparticuz/chromium');
-const puppeteer = require('puppeteer-core');
+let chromium;
+try {
+  chromium = require('@sparticuz/chromium');
+} catch (error) {
+  console.log("Running on Railway, skipping Vercel chromium package");
+}const puppeteer = require('puppeteer-core');
 
 // Increase memory limit for Vercel
 chromium.setHeadlessMode = true;
